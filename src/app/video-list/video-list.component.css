@@ -1,0 +1,44 @@
+.cart-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.cart-item {
+  width: calc(33.33% - 20px);
+  margin: 10px;
+}
+
+.row-break {
+  flex-basis: 100%;
+}
+
+.rectangular-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.info-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.right {
+  display: flex;
+}
+
+.profile-pic {
+  width: 30px;
+  height: 30px;
+  margin-right: 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #ffffff;
+}
+
+.date,
+.author {
+  margin-top: 10px;
+}

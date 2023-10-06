@@ -1,0 +1,20 @@
+<div class="cart-container">
+  <div *ngFor="let item of userAuthoredVideos; let i = index" class="cart-item">
+    <mat-card>
+      <img mat-card-image [src]="item.previewUrl" alt="Video Preview" class="rectangular-image">
+      <mat-card-content>
+        <h2>{{ item.title }}</h2>
+        <div class="info-container">
+          <div class="left">
+            <p class="date">{{ item.createdDate | date: 'yyyy-MM-dd' }}</p>
+          </div>
+          <div class="right">
+            <img src="{{ item.author.pictureUrl }}" alt="User Profile Pic" class="profile-pic">
+            <p class="author">{{ item.author.name }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <div *ngIf="(i + 1) % 3 === 0" class="row-break"></div>
+  </div>
+</div>

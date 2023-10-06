@@ -1,0 +1,12 @@
+
+<mat-toolbar color="primary">
+    <div class="left-corner">
+        <img src="assets/splyza-logo.png" alt="My Logo" class="logo">
+    </div>
+    
+    <span class="example-spacer"></span>
+    <div class="user-profile-pic">
+        <img [src]="userProfile.pictureUrl" alt="User Profile" class="rounded-image">
+    </div>
+    <div class="user-name">{{ userProfile.name }}</div>
+</mat-toolbar>
