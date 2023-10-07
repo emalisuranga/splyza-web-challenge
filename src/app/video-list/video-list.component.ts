@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { VideoService } from '../service/video-list.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-video-list',
@@ -11,6 +12,8 @@ export class VideoListComponent {
   videos: any[] = [];
   user: any;
   userAuthoredVideos: any[] = [];
+  isGridFormat = true;
+  dataSource = new MatTableDataSource<any>([]);
 
   constructor(private videoService: VideoService) { }
 
@@ -21,7 +24,6 @@ export class VideoListComponent {
   fetchVideos() {
     this.videoService.getVideos().subscribe((response: any) => {
       this.videos = response;
-      console.log(this.videos);
   
       this.filterVideosByAuthor(this.videos);
     });
@@ -41,13 +43,22 @@ export class VideoListComponent {
     });
 
     this.userAuthoredVideos = userAuthoredVideos
-  
-    console.log(userAuthoredVideos);
+    this.dataSource.data = this.userAuthoredVideos;
+
   }
   
   private getUserFromLocalStorage(): any {
     const storedUser = localStorage.getItem('userProfile');
     return storedUser ? JSON.parse(storedUser) : null;
+  }
+
+  handleListButtonClick(){
+    
+    this.isGridFormat = false
+  }
+
+  handleGridViewClick(){
+    this.isGridFormat = true
   }
   
 

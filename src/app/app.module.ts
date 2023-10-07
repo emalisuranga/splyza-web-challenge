@@ -4,6 +4,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCardModule} from '@angular/material/card'
+import { MatTableModule } from '@angular/material/table';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,7 @@ import { VideoListComponent } from './video-list/video-list.component';
     MatIconModule,
     MatToolbarModule,
     MatCardModule,
+    MatTableModule,
     HttpClientModule
   ],
   providers: [],
