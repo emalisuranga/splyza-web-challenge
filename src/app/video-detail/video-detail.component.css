@@ -1,0 +1,16 @@
+.page-container {
+    width: 800px;
+    display: block;
+    margin: 0 auto;
+}
+
+.video-scr {
+    width: 800px;
+    display: block;
+    margin: 0 auto;
+}
+
+.custom-input {
+    margin-right: 30px;
+    width: 85%; /* Set the width to 100% for the container */
+  }

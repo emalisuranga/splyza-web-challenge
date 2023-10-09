@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { VideoService } from '../service/video-list.service';
-import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-list',
@@ -13,9 +13,11 @@ export class VideoListComponent {
   user: any;
   userAuthoredVideos: any[] = [];
   isGridFormat = true;
-  dataSource = new MatTableDataSource<any>([]);
 
-  constructor(private videoService: VideoService) { }
+  constructor(
+    private videoService: VideoService,
+    private router: Router
+    ) { }
 
   ngOnInit() {
     this.fetchVideos();
@@ -24,43 +26,46 @@ export class VideoListComponent {
   fetchVideos() {
     this.videoService.getVideos().subscribe((response: any) => {
       this.videos = response;
-  
+
       this.filterVideosByAuthor(this.videos);
     });
   }
-  
+
   // Modify filterVideosByAuthor to accept the videos array as a parameter
   private filterVideosByAuthor(videos: any[]): void {
-    const user = this.getUserFromLocalStorage(); 
-  
+    const user = this.getUserFromLocalStorage();
+
     if (!user) {
       console.log('User not found in local storage');
       return;
     }
-  
+
     const userAuthoredVideos = videos.filter((video) => {
       return video.author.id === user.id;
     });
 
     this.userAuthoredVideos = userAuthoredVideos
-    this.dataSource.data = this.userAuthoredVideos;
 
   }
-  
+
   private getUserFromLocalStorage(): any {
     const storedUser = localStorage.getItem('userProfile');
     return storedUser ? JSON.parse(storedUser) : null;
   }
 
-  handleListButtonClick(){
-    
+  handleListButtonClick() {
+
     this.isGridFormat = false
   }
 
-  handleGridViewClick(){
+  handleGridViewClick() {
     this.isGridFormat = true
   }
-  
+
+  handleCardClick(videoId: string) {
+    this.router.navigate(['/videos', videoId]);
+  }
+
 
 
 

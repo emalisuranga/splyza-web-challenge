@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="page-container">
+
+    <div class="video-details" *ngIf="videoDetails">
+      <div>
+        <h2 *ngIf="!isVideoOwnedByCurrentUser()">{{ videoDetails.title }}</h2>
+
+        <!-- <input *ngIf="isEditing && isVideoOwnedByCurrentUser()" [(ngModel)]="editedTitle" /> -->
+        <mat-form-field class="custom-input">
+          <!-- <mat-label>Edit Title</mat-label> -->
+          <input matInput *ngIf="isVideoOwnedByCurrentUser()" [(ngModel)]="editedTitle" name="editedTitle" (input)="checkIfTitleIsEdited()">
+        </mat-form-field>
+        <button mat-raised-button [disabled] = "isEditing" color="primary">Save</button>
+      </div>
+    </div>
+
+
+
+    <div class="video-container">
+      <video class="video-scr" [src]="videoDetails?.url" controls>
+        Your browser does not support the video tag.
+      </video>
+    </div>
+<div>
+  <button mat-raised-button color="primary" (click)="takeSnapshot()">Snapshot</button>
+  <button mat-raised-button color="primary" (click)="takeSnapshot()">Snapshot</button>
+</div>
+
+<div class="reactions">
+  <div *ngFor="let reaction of reactions" class="reaction">
+    {{ reaction.type }} at {{ reaction.timestamp | date: 'short' }}
+  </div>
+</div>
+
+
+    <div class="video-details" *ngIf="videoDetails">
+      <h2>{{ videoDetails.title }}</h2>
+      <p>{{ videoDetails.description }}</p>
+    </div>
+  </div>
+</div>
