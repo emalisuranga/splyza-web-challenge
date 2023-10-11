@@ -98,6 +98,13 @@
   display: flex;
 }
 
+.video-item:hover {
+  background-color: #f0f0f0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  transform: scale(1.02); 
+  transition: box-shadow 0.3s, transform 0.3s; 
+}
+
 .center {
   align-self: center;
 }

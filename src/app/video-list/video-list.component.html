@@ -32,16 +32,18 @@
   </div>
 
   <div class="video-list-container" *ngIf="!isGridFormat">
-    <div *ngFor="let video of userAuthoredVideos" class="video-item">
-      <img [src]="video.previewUrl" alt="Video Preview" class="preview-image-small">
-
-      <span class="title center">{{ video.title }}</span>
-
-      <span class="created-date center">{{ video.createdDate | date: 'dd/MM/yyyy' }}</span>
-
-      <img [src]="video.author.pictureUrl" alt="Author Profile Pic" class="profile-pic-small center">
-
-      <span class="list-author center">{{ video.author.name }}</span>
+    <div *ngFor="let video of userAuthoredVideos">
+      <div  class="video-item" (click)="handleCardClick(video.id)">
+        <img [src]="video.previewUrl" alt="Video Preview" class="preview-image-small">
+  
+        <span class="title center">{{ video.title }}</span>
+  
+        <span class="created-date center">{{ video.createdDate | date: 'dd/MM/yyyy' }}</span>
+  
+        <img [src]="video.author.pictureUrl" alt="Author Profile Pic" class="profile-pic-small center">
+  
+        <span class="list-author center">{{ video.author.name }}</span>
+      </div>
     </div>
   </div>
 

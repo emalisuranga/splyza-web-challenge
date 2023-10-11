@@ -15,4 +15,9 @@ export class VideoDetailService {
     const url = `${this.apiUrl}/${videoId}`;
     return this.http.get(url);
   }
+
+  getVideoReactions(videoId: string): Observable<any> {
+    const url = `${this.apiUrl}/${videoId}`+'/reactions';
+    return this.http.get(url);
+  }
 }

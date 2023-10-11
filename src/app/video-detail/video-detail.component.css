@@ -4,6 +4,11 @@
     margin: 0 auto;
 }
 
+button {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
 .video-scr {
     width: 800px;
     display: block;
@@ -12,5 +17,45 @@
 
 .custom-input {
     margin-right: 30px;
-    width: 85%; /* Set the width to 100% for the container */
-  }
+    width: 85%;
+    /* Set the width to 100% for the container */
+}
+
+.profile-pic {
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #ffffff;
+}
+
+.info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.right {
+    display: flex;
+}
+
+.author {
+    margin-top: 10px;
+    color: rgb(119, 117, 117);
+}
+
+mat-grid-list:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: scale(1.02);
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.preview-image-small {
+    width: 120px;
+    height: 70px;
+    margin: 10px;
+}
