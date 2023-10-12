@@ -1,27 +1,36 @@
-# SplyzaWebChallenge
+# Splyza Web Challenge
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.5.
+Welcome to the Splyza Web Challenge project. This repository contains the source code for the web application developed as part of the challenge.
 
-## Development server
+## Getting Started
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+These instructions will help you set up and run the project on your local machine.
 
-## Code scaffolding
+### Prerequisites
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Before you begin, ensure you have the following installed:
 
-## Build
+- [Node.js](https://nodejs.org/) - JavaScript runtime
+- [Angular CLI](https://angular.io/guide/setup-local) - Angular development tool
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Installation
 
-## Running unit tests
+1. Clone the repository to your local machine:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+   ```bash
+   git clone https://github.com/emalisuranga/splyza-web-challenge.git
+   cd splyza-web-challenge
 
-## Running end-to-end tests
+## Install Project Dependencies
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. To install the necessary dependencies for this project, follow these steps:
 
-## Further help
+    ```bash
+    npm install
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Start the development server
+
+1. This command will start the development server, making your project accessible locally. You can then access your application through a web browser by navigating to http://localhost:4200. This is a common practice during development to test and preview your web application.
+
+    ```bash
+    ng serve
