@@ -59,3 +59,56 @@ mat-grid-list:hover {
     height: 70px;
     margin: 10px;
 }
+
+.five-pointed-star {
+    --star-color: #8f8c8c;
+    margin: 1em auto;
+    position: relative;
+    display: block;
+    width: 0px;
+    height: 0px;
+    left: 300px;
+    border-right: 1em solid transparent;
+    border-bottom: 0.7em solid var(--star-color);
+    border-left: 1em solid transparent;
+    transform: rotate(35deg);
+}
+
+.five-pointed-star:before {
+    border-bottom: 0.8em solid var(--star-color);
+    border-left: 0.3em solid transparent;
+    border-right: 0.3em solid transparent;
+    position: absolute;
+    height: 0;
+    width: 0;
+    top: -0.45em;
+    left: -0.65em;
+    display: block;
+    content: "";
+    transform: rotate(-35deg);
+}
+
+.five-pointed-star:after {
+    position: absolute;
+    display: block;
+    top: 0.03em;
+    left: -1.05em;
+    width: 0;
+    height: 0;
+    border-right: 1em solid transparent;
+    border-bottom: 0.7em solid var(--star-color);
+    border-left: 1em solid transparent;
+    transform: rotate(-70deg);
+    content: "";
+}
+
+@keyframes example {
+    from {
+        top: 200px;
+        background-color: #8f8c8c;
+    }
+    to {
+        top: 0px;
+        background-color: #ded9d9;
+    }
+}

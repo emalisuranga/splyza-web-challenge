@@ -25,4 +25,9 @@ export class VideoDetailService {
     const url = `${this.apiUrl}/${videoId}/reactions`;
     return this.http.post(url, reactionData);
   }
+
+  updateVideoTitle(videoId: string, reactionData: any): Observable<any> {
+    const url = `${this.apiUrl}/${videoId}/reactions`;
+    return this.http.patch(url, reactionData);
+  }
 }

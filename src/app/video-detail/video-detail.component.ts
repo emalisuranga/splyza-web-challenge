@@ -18,37 +18,21 @@ export class VideoDetailComponent {
   editedTitle: string = '';
   user: any;
   isTitleEdited: boolean = true;
-  // type: string;
-  // timestamp: Date;
   isOwnedByCurrentUser: boolean = false;
-
-  // // @ViewChild('videoElement', { static: true }) videoElement: ElementRef | undefined;
-  // screenshotDataUrl: string | undefined;
-  // screenshot: string | null = null;
-
-
-
-
-
+  isStarActive = false;
+  displayStyle = 'none';
 
   @ViewChild('videoElement') videoElement: ElementRef | undefined;
   @ViewChild('screenshotCanvas') screenshotCanvas: ElementRef | undefined;
-  // @ViewChild('screenshotImage') screenshotImage: ElementRef | undefined;
-  currentTime: number | null = null;
   readonly typeStar: string = 'star';
   readonly typeSnapshot: string = 'snapshot';
   base64ImageData: string | null = null;
 
 
 
-
-
-
   constructor(
     private videoDetailService: VideoDetailService,
     private route: ActivatedRoute) {
-    // this.type = 'Snapshot';
-    // this.timestamp = new Date();
   }
 
   ngOnInit(): void {
@@ -97,6 +81,37 @@ export class VideoDetailComponent {
     }
   }
 
+  updateVideoTitle() {
+    const reactionData = {
+      title: this.editedTitle
+    };
+    if (this.videoId !== null) {
+      this.videoDetailService.updateVideoTitle(this.videoId, reactionData).subscribe(
+        (data) => {
+          console.log('Reaction sent successfully:', data);
+        },
+        (error) => {
+          console.error('Error fetching video Reactions:', error);
+        }
+      );
+    }
+    
+  }
+
+  private sendReactionToServer(reactionData: any) {
+    if (this.videoId !== null) {
+      this.videoDetailService.sendReaction(this.videoId, reactionData).subscribe(
+        (response) => {
+          this.videoReactions = response.reverse();
+          console.log('Reaction sent successfully:', response);
+        },
+        (error) => {
+          console.error('Error sending reaction:', error);
+        }
+      );
+    }
+  }
+
   private getUserFromLocalStorage(): any {
     const storedUser = localStorage.getItem('userProfile');
     return storedUser ? JSON.parse(storedUser) : null;
@@ -129,41 +144,31 @@ export class VideoDetailComponent {
     this.isEditing = false
   }
 
-  sendVideoReaction(type: string) {
-    const reactionData: {
-      videoId: string | null;
-      type: string;
-      timeframe?: number | null;
-      dataUri?: string | null;
-    } = {
+  sendVideoReactionWithTimeFrame(type: string, timeframe: number) {
+    const reactionData = {
       videoId: this.videoId,
-      type: type
+      type: type,
+      timeframe: timeframe,
     };
+  
+    this.sendReactionToServer(reactionData);
+  }
 
-    if (this.base64ImageData !== null) {
-      reactionData.dataUri = this.base64ImageData
-    }
-    if (this.currentTime !== null) {
-      reactionData.timeframe = this.currentTime
-    }
-    if (this.videoId !== null) {
-      this.videoDetailService.sendReaction(this.videoId, reactionData).subscribe(response => {
-        this.videoReactions = response.reverse()
-        console.log('Reaction sent successfully:', response);
-      },
-        (error) => {
-          console.error('Error sending reaction:', error);
-        });
-    }
-
+  sendVideoReactionWithImageData(type: string, timeframe: number, base64ImageData: any) {
+    const reactionData = {
+      videoId: this.videoId,
+      type: type,
+      timeframe: timeframe,
+      dataUri: base64ImageData
+    };
+  
+    this.sendReactionToServer(reactionData);
   }
 
   takeScreenshot() {
-    // Get native HTML elements
     if (this.videoElement && this.screenshotCanvas) {
       const videoElement: HTMLVideoElement = this.videoElement.nativeElement;
       const screenshotCanvas: HTMLCanvasElement = this.screenshotCanvas.nativeElement;
-      // const screenshotImage: HTMLImageElement = this.screenshotImage.nativeElement;
       const context = screenshotCanvas.getContext('2d');
 
       if (context) {
@@ -178,11 +183,7 @@ export class VideoDetailComponent {
         this.base64ImageData = screenshotCanvas.toDataURL('image/png');
         const currentTimeInSeconds = videoElement.currentTime;
         const minutes = (currentTimeInSeconds / 60).toFixed(4);
-        this.currentTime = parseInt(minutes)
-        console.log(base64ImageData);
-        // screenshotImage.src = screenshotCanvas.toDataURL('image/png');
-        // screenshotImage.style.display = 'block';
-        this.sendVideoReaction(this.typeSnapshot);
+        this.sendVideoReactionWithImageData(this.typeSnapshot,parseInt(minutes),base64ImageData)
 
       }
     }
@@ -194,9 +195,11 @@ export class VideoDetailComponent {
       const video: HTMLVideoElement = this.videoElement.nativeElement;
       const currentTimeInSeconds = video.currentTime;
       const minutes = (currentTimeInSeconds / 60).toFixed(4);
-      this.currentTime = parseInt(minutes)
-      this.sendVideoReaction(this.typeStar);
+      // this.currentTime = parseInt(minutes)
+      this.sendVideoReactionWithTimeFrame(this.typeStar,parseInt(minutes))
     }
+    this.isStarActive = !this.isStarActive;
+    this.displayStyle = this.isStarActive ? 'block' : 'none';
 
   }
 
