@@ -2,93 +2,76 @@
   <div class="page-container">
 
     <div class="video-details" *ngIf="videoDetails">
-      <div>
-        <h2 *ngIf="!isOwnedByCurrentUser">{{ videoDetails.title }}</h2>
 
-        <!-- <input *ngIf="isEditing && isVideoOwnedByCurrentUser()" [(ngModel)]="editedTitle" /> -->
+      <div *ngIf="isOwnedByCurrentUser">
         <mat-form-field class="custom-input">
-          <!-- <mat-label>Edit Title</mat-label> -->
           <input matInput *ngIf="isOwnedByCurrentUser" [(ngModel)]="editedTitle" name="editedTitle"
             (input)="checkIfTitleIsEdited()">
         </mat-form-field>
-        <button mat-raised-button [disabled]="isEditing" color="primary">Save</button>
+        <button mat-raised-button *ngIf="isOwnedByCurrentUser" [disabled]="isEditing" color="primary">Save</button>
       </div>
-    </div>
 
-
-
-    <div class="video-container">
-      <video class="video-scr" [src]="videoDetails?.url" controls>
-        Your browser does not support the video tag.
-      </video>
-    </div>
-    <div class="info-container">
-      <div class="left">
-        <button mat-raised-button>
-          <mat-icon>photo_camera</mat-icon>
-          Snapshot
-        </button>
-        <button mat-raised-button>
-          <mat-icon>star</mat-icon>
-          Star
-        </button>
+      <div *ngIf="!isOwnedByCurrentUser">
+        <h2>{{ videoDetails.title }}</h2>
       </div>
-      <div class="right" *ngIf="videoDetails">
-        <img src="{{ videoDetails?.author.pictureUrl }}" alt="User Profile Pic" class="profile-pic">
-        <p class="author">{{ videoDetails?.author.name }}</p>
+
+      <div class="video-container">
+        <video class="video-scr" #videoElement [src]="videoDetails?.url" controls>
+          Your browser does not support the video tag.
+        </video>
       </div>
-    </div>
 
-    <div>
-      Reaction
-    </div>
-
-    <!-- <div>
-      <div *ngFor="let reaction of videoReactions">
-        <div *ngIf="reaction.type === 'star'" class="video-item">
-          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="star"
-            class="reaction-icon center"></mat-icon>
-          <span class="created-timeframe center">{{ reaction.timeframe }}</span>
-          <span class="title center">{{ reaction.author.name }} a video</span>
-          <span class="created-date center">({{ reaction.postedDate | date: 'dd/MM/yyyy' }})</span>
+      <div class="info-container">
+        <div class="left">
+          <button mat-raised-button (click)="takeScreenshot()">
+            <mat-icon>photo_camera</mat-icon>
+            Snapshot
+          </button>
+          <button mat-raised-button (click)="updateCurrentTimeAndSendReaction()">
+            <mat-icon>star</mat-icon>
+            Star
+          </button>
         </div>
-
-        <div *ngIf="reaction.type === 'snapshot'" class="video-item">
-          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="photo_camera"
-            class="reaction-icon center"></mat-icon>
-          <span class="created-timeframe center">{{ reaction.timeframe }}</span>
-          <span class="title center">{{ reaction.author.name }} a snapshot</span>
-          <span class="created-date center">({{ reaction.createdDate | date: 'dd/MM/yyyy' }})</span>
-          <img [src]="reaction.imageUrl" alt="Video Preview" class="preview-image-small">
+        <div class="right" *ngIf="videoDetails">
+          <img src="{{ videoDetails?.author.pictureUrl }}" alt="User Profile Pic" class="profile-pic">
+          <p class="author">{{ videoDetails?.author.name }}</p>
         </div>
       </div>
-    </div> -->
+
+      <div *ngIf="videoReactions">
+        Reaction
+      </div>
+    </div>
+
+
 
     <div>
       <mat-grid-list cols="6" rowHeight="100px" *ngFor="let reaction of videoReactions">
-        <div *ngIf="reaction.type === 'star'" >
+        <div *ngIf="reaction.type === 'star'">
           <mat-grid-tile colspan="1">
-            <mat-icon aria-hidden="false" aria-label="Reaction icon" fontIcon="star" class="reaction-icon center"></mat-icon>
+            <mat-icon aria-hidden="false" aria-label="Reaction icon" fontIcon="star"
+              class="reaction-icon center"></mat-icon>
           </mat-grid-tile>
           <mat-grid-tile colspan="1">
             <span class="created-timeframe center">{{ reaction.timeframe }}</span>
           </mat-grid-tile>
           <mat-grid-tile colspan="2">
             <span class="title center">{{ reaction.author.name }} a video</span>
-            <span class="created-date center">({{ reaction.postedDate | date: 'dd/MM/yyyy'  }})</span>
+            <span class="created-date center">({{ reaction.postedDate | date: 'dd/MM/yyyy' }})</span>
           </mat-grid-tile>
         </div>
 
-        <div *ngIf="reaction.type === 'snapshot'" >
+        <div *ngIf="reaction.type === 'snapshot'">
           <mat-grid-tile colspan="1">
-            <mat-icon aria-hidden="false" aria-label="Reaction icon" fontIcon="photo_camera" class="reaction-icon center"></mat-icon>
+            <mat-icon aria-hidden="false" aria-label="Reaction icon" fontIcon="photo_camera"
+              class="reaction-icon center"></mat-icon>
           </mat-grid-tile>
           <mat-grid-tile colspan="1">
             <span class="created-timeframe center">{{ reaction.timeframe }}</span>
           </mat-grid-tile>
           <mat-grid-tile colspan="2">
             <span class="title center">{{ reaction.author.name }} a video</span>
-            <span class="created-date center">({{ reaction.createdDate | date: 'dd/MM/yyyy'  }})</span>
+            <span class="created-date center">({{ reaction.createdDate | date: 'dd/MM/yyyy' }})</span>
           </mat-grid-tile>
           <mat-grid-tile colspan="2">
             <img [src]="reaction.imageUrl" alt="Video Preview" class="preview-image-small">
@@ -96,55 +79,5 @@
         </div>
       </mat-grid-list>
     </div>
-    
 
-    <!-- <span class="created-date center">'('{{ video.createdDate | date: 'dd/MM/yyyy' }}')'</span>
-        <div></div>
-        <img [src]="video.previewUrl" alt="Video Preview" class="preview-image-small">
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
-        <span class="title center">{{ video.title }} </span>
-  
-        <span class="title center">{{ video.title }}</span>
-  
-        <span class="created-date center">{{ video.createdDate | date: 'dd/MM/yyyy' }}</span>
-  
-        <img [src]="video.author.pictureUrl" alt="Author Profile Pic" class="profile-pic-small center">
-  
-        <span class="list-author center">{{ video.author.name }}</span> -->
-
-
-
-
-
-    <!-- <div>
-  <video #videoElement [src]="videoDetails?.url" controls></video>
-  <button (click)="captureScreenshot()">Capture Screenshot</button>
-</div>
-<div *ngIf="screenshot">
-  <img [src]="screenshot" alt="Screenshot">
-</div> -->
-    <!-- <div class="reactions">
-  <div *ngFor="let reaction of reactions" class="reaction">
-    {{ reaction.type }} at {{ reaction.timestamp | date: 'short' }}
-  </div>
-</div> -->
-
-    <!-- <div #screen>
-    <h1>Hello, World!</h1>
-    <p>This is a sample HTML element to capture as a screenshot.</p>
-  </div> -->
-
-    <!-- <div>
-    <video #videoElement controls></video>
-    <button (click)="captureScreenshot()">Capture Screenshot</button>
-  </div>
-  <div *ngIf="screenshot">
-    <img [src]="screenshot" alt="Screenshot">
-  </div> -->
-
-
-    <!-- <div class="video-details" *ngIf="videoDetails">
-        <h2>{{ videoDetails.title }}</h2>
-        <p>{{ videoDetails.description }}</p>
-      </div> -->
   </div>

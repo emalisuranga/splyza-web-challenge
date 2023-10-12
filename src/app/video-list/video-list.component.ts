@@ -27,31 +27,31 @@ export class VideoListComponent {
     this.videoService.getVideos().subscribe((response: any) => {
       this.videos = response;
 
-      this.filterVideosByAuthor(this.videos);
+      // this.filterVideosByAuthor(this.videos);
     });
   }
 
   // Modify filterVideosByAuthor to accept the videos array as a parameter
-  private filterVideosByAuthor(videos: any[]): void {
-    const user = this.getUserFromLocalStorage();
+  // private filterVideosByAuthor(videos: any[]): void {
+  //   const user = this.getUserFromLocalStorage();
 
-    if (!user) {
-      console.log('User not found in local storage');
-      return;
-    }
+  //   if (!user) {
+  //     console.log('User not found in local storage');
+  //     return;
+  //   }
 
-    const userAuthoredVideos = videos.filter((video) => {
-      return video.author.id === user.id;
-    });
+  //   const userAuthoredVideos = videos.filter((video) => {
+  //     return video.author.id === user.id;
+  //   });
 
-    this.userAuthoredVideos = userAuthoredVideos
+  //   this.userAuthoredVideos = userAuthoredVideos
 
-  }
+  // }
 
-  private getUserFromLocalStorage(): any {
-    const storedUser = localStorage.getItem('userProfile');
-    return storedUser ? JSON.parse(storedUser) : null;
-  }
+  // private getUserFromLocalStorage(): any {
+  //   const storedUser = localStorage.getItem('userProfile');
+  //   return storedUser ? JSON.parse(storedUser) : null;
+  // }
 
   handleListButtonClick() {
 

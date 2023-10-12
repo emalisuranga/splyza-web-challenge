@@ -9,7 +9,7 @@
   </div>
 
   <div class="cart-container" *ngIf="isGridFormat">
-    <div *ngFor="let item of userAuthoredVideos; let i = index" class="cart-item">
+    <div *ngFor="let item of videos; let i = index" class="cart-item">
       <mat-card class="hoverable-card" (click)="handleCardClick(item.id)">
         <img mat-card-image [src]="item.previewUrl" alt="Video Preview" class="rectangular-image">
         <mat-card-content>
@@ -32,7 +32,7 @@
   </div>
 
   <div class="video-list-container" *ngIf="!isGridFormat">
-    <div *ngFor="let video of userAuthoredVideos">
+    <div *ngFor="let video of videos">
       <div  class="video-item" (click)="handleCardClick(video.id)">
         <img [src]="video.previewUrl" alt="Video Preview" class="preview-image-small">
   

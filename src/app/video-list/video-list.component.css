@@ -1,14 +1,16 @@
 .icon-container {
   top: 20px;
   right: 20px;
-  flex-direction: row; 
-  align-items: center; 
+  flex-direction: row;
+  align-items: center;
   display: flex;
-  justify-content: flex-end; 
+  justify-content: flex-end;
 }
 
 .icon {
-  font-size: 24px;
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
   margin-right: 10px;
   cursor: pointer;
 }
@@ -25,7 +27,8 @@
 }
 
 .title-container {
-  width: 100%; /* Adjust the width as needed */
+  width: 100%;
+  /* Adjust the width as needed */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -33,9 +36,9 @@
 
 .hoverable-card:hover {
   background-color: #f0f0f0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-  transform: scale(1.02); 
-  transition: box-shadow 0.3s, transform 0.3s; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02);
+  transition: box-shadow 0.3s, transform 0.3s;
 }
 
 .hoverable-card {
@@ -77,15 +80,15 @@
 }
 
 .preview-image-small {
-  width: 200px; 
-  height: 120px; 
+  width: 200px;
+  height: 120px;
   flex-grow: 1;
   margin: 10px;
 }
 
 .profile-pic-small {
-  width: 50px; 
-  height: auto; 
+  width: 50px;
+  height: auto;
   margin: 10px 15px 10px 15px;
   border-radius: 50%;
   overflow: hidden;
@@ -93,29 +96,30 @@
 }
 
 .video-item {
-  flex: 0 0 calc(33.33% - 20px); 
-  margin: 10px 10px 20px 10px; 
+  flex: 0 0 calc(33.33% - 20px);
+  margin: 10px 10px 20px 10px;
   display: flex;
 }
 
 .video-item:hover {
   background-color: #f0f0f0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-  transform: scale(1.02); 
-  transition: box-shadow 0.3s, transform 0.3s; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02);
+  transition: box-shadow 0.3s, transform 0.3s;
 }
 
 .center {
   align-self: center;
 }
 
-.title{
+.title {
   flex-grow: 100;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.created-date,.list-author{
+.created-date,
+.list-author {
   color: rgb(119, 117, 117);
 }

@@ -18,19 +18,37 @@ export class VideoDetailComponent {
   editedTitle: string = '';
   user: any;
   isTitleEdited: boolean = true;
-  type: string;
-  timestamp: Date;
+  // type: string;
+  // timestamp: Date;
   isOwnedByCurrentUser: boolean = false;
 
-  @ViewChild('videoElement', { static: true }) videoElement: ElementRef | undefined;
-  screenshotDataUrl: string | undefined;
-  screenshot: string | null = null;
+  // // @ViewChild('videoElement', { static: true }) videoElement: ElementRef | undefined;
+  // screenshotDataUrl: string | undefined;
+  // screenshot: string | null = null;
+
+
+
+
+
+
+  @ViewChild('videoElement') videoElement: ElementRef | undefined;
+  @ViewChild('screenshotCanvas') screenshotCanvas: ElementRef | undefined;
+  // @ViewChild('screenshotImage') screenshotImage: ElementRef | undefined;
+  currentTime: number | null = null;
+  readonly typeStar: string = 'star';
+  readonly typeSnapshot: string = 'snapshot';
+  base64ImageData: string | null = null;
+
+
+
+
+
 
   constructor(
     private videoDetailService: VideoDetailService,
     private route: ActivatedRoute) {
-    this.type = 'Snapshot';
-    this.timestamp = new Date();
+    // this.type = 'Snapshot';
+    // this.timestamp = new Date();
   }
 
   ngOnInit(): void {
@@ -46,7 +64,6 @@ export class VideoDetailComponent {
         this.fetchVideoReactions()
       } else {
         this.videoId = null;
-        // Handle the case where videoId is null, e.g., show an error or redirect
       }
     });
   }
@@ -56,12 +73,9 @@ export class VideoDetailComponent {
       this.videoDetailService.getVideoDetails(this.videoId).subscribe(
         (data) => {
           this.videoDetails = data;
-          if(this.videoDetails.author) {
+          if (this.videoDetails.author) {
             this.isVideoOwnedByCurrentUser(this.videoDetails.author.id)
           }
-          
-          // console.log(this.videoDetails.url);
-          // Handle the fetched video details here
         },
         (error) => {
           console.error('Error fetching video details:', error);
@@ -74,9 +88,7 @@ export class VideoDetailComponent {
     if (this.videoId !== null) {
       this.videoDetailService.getVideoReactions(this.videoId).subscribe(
         (data) => {
-          this.videoReactions = data;
-          console.log(this.videoReactions);
-          // Handle the fetched video details here
+          this.videoReactions = data.reverse();
         },
         (error) => {
           console.error('Error fetching video Reactions:', error);
@@ -94,7 +106,6 @@ export class VideoDetailComponent {
     this.user = this.getUserFromLocalStorage();
 
     if (this.videoDetails && authorId !== null && this.user.id === authorId) {
-      // If the video is owned by the logged-in user, enable editing
       this.isEditing = true;
       this.editedTitle = this.videoDetails.title;
       this.initializeTitleProperties();
@@ -118,68 +129,75 @@ export class VideoDetailComponent {
     this.isEditing = false
   }
 
-  captureScreenshot1() {
+  sendVideoReaction(type: string) {
+    const reactionData: {
+      videoId: string | null;
+      type: string;
+      timeframe?: number | null;
+      dataUri?: string | null;
+    } = {
+      videoId: this.videoId,
+      type: type
+    };
+
+    if (this.base64ImageData !== null) {
+      reactionData.dataUri = this.base64ImageData
+    }
+    if (this.currentTime !== null) {
+      reactionData.timeframe = this.currentTime
+    }
+    if (this.videoId !== null) {
+      this.videoDetailService.sendReaction(this.videoId, reactionData).subscribe(response => {
+        this.videoReactions = response.reverse()
+        console.log('Reaction sent successfully:', response);
+      },
+        (error) => {
+          console.error('Error sending reaction:', error);
+        });
+    }
+
+  }
+
+  takeScreenshot() {
+    // Get native HTML elements
+    if (this.videoElement && this.screenshotCanvas) {
+      const videoElement: HTMLVideoElement = this.videoElement.nativeElement;
+      const screenshotCanvas: HTMLCanvasElement = this.screenshotCanvas.nativeElement;
+      // const screenshotImage: HTMLImageElement = this.screenshotImage.nativeElement;
+      const context = screenshotCanvas.getContext('2d');
+
+      if (context) {
+        screenshotCanvas.width = videoElement.videoWidth;
+        screenshotCanvas.height = videoElement.videoHeight;
+
+        context.drawImage(videoElement, 0, 0, screenshotCanvas.width, screenshotCanvas.height);
+
+        screenshotCanvas.style.display = 'block';
+
+        const base64ImageData: string = screenshotCanvas.toDataURL('image/png');
+        this.base64ImageData = screenshotCanvas.toDataURL('image/png');
+        const currentTimeInSeconds = videoElement.currentTime;
+        const minutes = (currentTimeInSeconds / 60).toFixed(4);
+        this.currentTime = parseInt(minutes)
+        console.log(base64ImageData);
+        // screenshotImage.src = screenshotCanvas.toDataURL('image/png');
+        // screenshotImage.style.display = 'block';
+        this.sendVideoReaction(this.typeSnapshot);
+
+      }
+    }
+
+  }
+
+  updateCurrentTimeAndSendReaction() {
     if (this.videoElement) {
-      html2canvas(this.videoElement.nativeElement).then((canvas) => {
-        // Convert the screenshot to a data URL
-        this.screenshotDataUrl = canvas.toDataURL('image/png');
-      });
-    }
-  }
-
-  captureScreenshot(): void {
-
-    const video = this.videoElement?.nativeElement;
-    const canvas = document.createElement('canvas');
-    if (video && canvas) {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        this.screenshot = canvas.toDataURL('image/png');
-      }
+      const video: HTMLVideoElement = this.videoElement.nativeElement;
+      const currentTimeInSeconds = video.currentTime;
+      const minutes = (currentTimeInSeconds / 60).toFixed(4);
+      this.currentTime = parseInt(minutes)
+      this.sendVideoReaction(this.typeStar);
     }
 
-    // canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Convert the captured frame to a data URL (base64)
-    // this.screenshot = canvas.toDataURL('image/png');
-
-    // You can also capture the video itself if needed
-    // To capture the video, you can create a Blob from the video's MediaStream
-    const mediaStream = video.captureStream();
-    const mediaRecorder = new MediaRecorder(mediaStream);
-
-    const videoChunks: Blob[] | undefined = [];
-    mediaRecorder.ondataavailable = (event) => {
-      if (event.data.size > 0) {
-        videoChunks.push(event.data);
-      }
-    };
-
-    mediaRecorder.onstop = () => {
-      const videoBlob = new Blob(videoChunks, { type: 'video/mp4' });
-      // You can now use `videoBlob` to store or upload the captured video
-    };
-
-    mediaRecorder.start();
-    setTimeout(() => {
-      mediaRecorder.stop();
-    }, 1000); // Capture video for 1 second (adjust as needed)
   }
-  // takeSnapshot() {
-  //   const snapshotReaction = new SnapshotReaction();
-
-  //   // Send the Snapshot Reaction to the server
-  //   this.videoService.createReaction(this.videoId, snapshotReaction).subscribe((response: any) => {
-  //     // Assuming the server responds with the created Snapshot Reaction
-  //     const createdSnapshotReaction: SnapshotReaction = response;
-
-  //     // Add the created Snapshot Reaction to the list of reactions
-  //     this.reactions.unshift(createdSnapshotReaction);
-  //   });
-  // }
 
 }
